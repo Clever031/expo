@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+
+  mongo_db:
+    image: mongo:latest
+    container_name: exam_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend_api:
+    build: ./backend
+    container_name: exam_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo_db
+    environment:
+      - MONGO_URI=mongodb://mongo_db:27017/Book_db
+
+volumes:
+  mongo_data:
